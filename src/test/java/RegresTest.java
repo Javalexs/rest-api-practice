@@ -2,12 +2,9 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.*;
-//import static org.apache.commons.codec.digest.UnixCrypt.body;
-
 
 public class RegresTest {
     @Test
@@ -38,7 +35,7 @@ public class RegresTest {
 
     @Test
     @DisplayName("Проверка присвоения токена при запросе")
-    void checkRegisterSuss(){
+    void checkRegisterSuccessful(){
         String data = "{ \"email\": \"eve.holt@reqres.in\", \"password\": \"pistol\" }";
         given()
                 .contentType(JSON)
@@ -52,7 +49,7 @@ public class RegresTest {
 
     @Test
     @DisplayName("Проверка создания нового аккаунта")
-    void creatUser() {
+    void createUser() {
         String user = "{ \"name\": \"morpheus\", \"job\": \"leader\" }";
         given()
                 .when()
