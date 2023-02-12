@@ -97,7 +97,7 @@ public class RegresTest {
         UserData data = given()
                 .spec(request)
                 .when()
-                .get("/users?page=2")
+                .get("/users/3")
                 .then()
                 .spec(responce)
                 .log().all()
