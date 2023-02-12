@@ -1,10 +1,18 @@
-import io.restassured.http.ContentType;
+
+import lombok.LombokUserData;
+import model.User;
+import model.UserData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static Spec.Specs.request;
+import static Spec.Specs.responce;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class RegresTest {
     @Test
@@ -63,7 +71,7 @@ public class RegresTest {
     }
     @Test
     @DisplayName("Проверка запроса данных у несуществующего аккаунта")
-    public void checkUnknownUser() {
+    void checkUnknownUser() {
         given()
                 .when()
                 .log().uri()
@@ -71,6 +79,33 @@ public class RegresTest {
                 .then()
                 .statusCode(404);
     }
+
+    @Test
+    @DisplayName("Проверка существующего цвета с помощью Groovy запроса")
+    void checkWithGroovy(){
+        given()
+                .when()
+                .spec(request)
+                .get("/unknown")
+                .then()
+                .log().body()
+                .body("data.findAll{it.id == 2}.name", hasItem("fuchsia rose"));
+    }
+    @Test
+    @DisplayName("Проверка запроса при помощи модели Lombok")
+    void checkwithLombok() {
+        UserData data = given()
+                .spec(request)
+                .when()
+                .get("/users?page=2")
+                .then()
+                .spec(responce)
+                .log().all()
+                .extract().as(UserData.class);
+        assertEquals(data.getData().getId(), 3);
+        assertEquals(data.getData().getFirstName(), "Emma");
+    }
+
 }
 
 
